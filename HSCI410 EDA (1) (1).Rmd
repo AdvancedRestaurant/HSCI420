@@ -1,0 +1,702 @@
+---
+title: "HSCI 410 Project"
+author: "Mark Ly"
+date: "10/7/2020"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r depr}
+
+
+
+library(dplyr)
+library(ggplot2)
+
+depdata <- select(x,ADM_RNO,GEO_PRV,DHH_SEX,DHHGMS,DHHGAGE,DHHDGLVG,MAC_005,MAC_010,EHG2DVR3,GEN_005,GEN_015,GEN_020,GEN_025,GEN_030,GENDVMHI,GENDVSWL,CMH_005, CMH_015B,CMH_015A,CMH_015C,CMH_015D,CMH_015E,CMH_015F,SWL_005,SWL_015,SWL_020,SWL_040,DODEP,DEPDVSEV,SUI_005,SUI_010,DOWST,WST_005,WST_010,WST_015,WST_020,WST_025,WST_030,WST_035,WST_040,WST_045,WST_050,WST_055,WST_060,WST_070,GENDVHDI,CCC_200,INCDGPER,INCDGHH,LBFDGHPW,CCC_195,CCC_200,LBFDVPFT)
+
+smalldata <- select(x,ADM_RNO,GEO_PRV,DHH_SEX,DHHGMS,DHHGAGE,DHHDGLVG,MAC_005,MAC_010,EHG2DVR3,GEN_005,GEN_015,GEN_020,GEN_025,GEN_030,GENDVMHI,GENDVSWL,CMH_005, CMH_015B,CMH_015A,CMH_015C,CMH_015D,CMH_015E,CMH_015F,SWL_005,SWL_015,SWL_020,SWL_040,DODEP,DEPDVSEV,SUI_005,SUI_010,DOWST,WST_005,WST_010,WST_015,WST_020,WST_025,WST_030,WST_035,WST_040,WST_045,WST_050,WST_055,WST_060,WST_070,GENDVHDI,CCC_200,INCDGPER,INCDGHH,LBFDGHPW,CCC_195,CCC_200,LBFDVPFT)
+
+#depdata <- filter(smalldata, DODEP == "Yes")
+
+#Frequency distributions
+#Depression severity
+dfdepsev <- depdata %>%
+  group_by(DEPDVSEV) %>%
+  summarise(count = n())
+
+ggplot(dfdepsev, aes(x = DEPDVSEV, y = count)) +
+  geom_bar(fill = "#0073C2FF", stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.3)
+
+#Depression and anxiety
+dfdepanix <- depdata %>%
+  group_by(CCC_200) %>%
+  summarise(count = n())
+
+ggplot(dfdepanix, aes(x = CCC_200, y = count)) +
+  geom_bar(fill = "#0073C2FF", stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.3)
+
+#Depression and Perceived health/mental health
+dfdepperhlth <- depdata %>%
+  group_by(GENDVHDI) %>%
+  summarise(count = n())
+
+ggplot(dfdepperhlth, aes(x = GENDVHDI, y = count)) +
+  geom_bar(fill = "#0073C2FF", stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.3)
+
+dfdeppermnthlth <- depdata %>%
+  group_by(GENDVMHI) %>%
+  summarise(count = n())
+
+ggplot(dfdeppermnthlth, aes(x = GENDVMHI, y = count)) +
+  geom_bar(fill = "#0073C2FF", stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.3)
+
+#Work stress
+dfdepwrkstrs <- depdata %>%
+  group_by(DOWST) %>%
+  summarise(count = n())
+
+ggplot(dfdepwrkstrs, aes(x = DOWST, y = count)) +
+  geom_bar(fill = "#0073C2FF", stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.3)
+
+#Job Security 
+dfdepwrksecure<- depdata %>%
+  group_by(WST_035) %>%
+  summarise(count = n())
+
+ggplot(dfdepwrksecure, aes(x = WST_035, y = count)) +
+  geom_bar(fill = "#0073C2FF", stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.3)
+
+#Age
+dfdepAge<- depdata %>%
+  group_by(DHHGAGE) %>%
+  summarise(count = n())
+
+ggplot(dfdepAge, aes(x = DHHGAGE, y = count)) +
+  geom_bar(fill = "#0073C2FF", stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.3)
+
+#Income
+
+dfdepinc<- depdata %>%
+  group_by(INCDGPER) %>%
+  summarise(count = n())
+
+ggplot(dfdepinc, aes(x = INCDGPER, y = count)) +
+  geom_bar(fill = "#0073C2FF", stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.3)
+
+dfdephhinc<- depdata %>%
+  group_by(INCDGHH) %>%
+  summarise(count = n())
+
+ggplot(dfdephhinc, aes(x = INCDGHH, y = count)) +
+  geom_bar(fill = "#0073C2FF", stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.3)
+
+#Mood disorder
+dfdepmood<- depdata %>%
+  group_by(CCC_195) %>%
+  summarise(count = n())
+
+ggplot(dfdepmood, aes(x = CCC_195, y = count)) +
+  geom_bar(fill = "#0073C2FF", stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.3)
+
+dfdepanxi<- depdata %>%
+  group_by(CCC_200) %>%
+  summarise(count = n())
+
+ggplot(dfdepanxi, aes(x = CCC_200, y = count)) +
+  geom_bar(fill = "#0073C2FF", stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.3)
+
+#hours
+dfdephours<- depdata %>%
+  group_by(LBFDGHPW) %>%
+  summarise(count = n())
+
+ggplot(dfdephours, aes(x = LBFDGHPW, y = count)) +
+  geom_bar(fill = "#0073C2FF", stat = "identity") +
+  geom_text(aes(label = count), vjust = -0.3)
+
+```
+
+```{r}
+#Re-coding data
+
+scale1 <- function(x){
+  case_when(x %in% c("Poor")~0,
+            x %in% c("Fair")~1,
+            x %in% c("Good")~2,
+            x %in% c("Very good")~3,
+            x %in% c("Excellent")~4,
+            x %in% c("Not stated")~9)
+}
+scale2 <- function(x){
+  case_when(x %in% c("Married")~0,
+            x %in% c("Common-law")~1,
+            x %in% c("Widowed/Divorced/Separated")~2,
+            x %in% c("Single")~3,
+            x %in% c("Not stated")~9)
+}
+
+scale3 <- function(x){
+  case_when(x %in% c("No depression")~0,
+            x %in% c("Minimal depression")~1,
+            x %in% c("Mild depression")~2,
+            x %in% c("Moderate depression")~3,
+            x %in% c("Moderately severe depression")~4,
+            x %in% c("Severe depression")~5,
+            x %in% c("Valid skip")~9,
+            x %in% c("Not stated")~9)
+}
+
+scale4 <- function(x){
+  case_when(x %in% c("Full-time")~0,
+            x %in% c("Part-time")~1,
+            x %in% c("Valid skip")~9,
+            x %in% c("Not stated")~9)
+}
+
+scale5 <- function(x){
+  case_when(x %in% c("No income or income loss")~0,
+            x %in% c("Less than $20,000")~1,
+            x %in% c("$20,000 to $39,999")~2,
+            x %in% c("$40,000 to $59,999")~3,
+            x %in% c("$60,000 to $79,999")~4,
+            x %in% c("$80,000 or more")~5,
+            x %in% c("Valid skip")~9,
+            x %in% c("Not stated")~9)
+}
+
+scale6 <- function(x){
+  case_when(x %in% c("Not at all satisfied")~0,
+            x %in% c("Not too satisfied")~1,
+            x %in% c("Somewhat satisfied")~2,
+            x %in% c("Very satisfied")~3,
+            x %in% c("Valid skip")~9,
+            x %in% c("Don’t know")~9,
+            x %in% c("Refusal")~9,
+            x %in% c("Not stated")~9)
+
+}
+
+scale7 <- function(x){
+  case_when(x %in% c("Not at all stressful")~0,
+            x %in% c("Not very stressful")~1,
+            x %in% c("A bit stressful")~2,
+            x %in% c("Quite a bit stressful")~3,
+            x %in% c("Extremely stressful")~4,
+            x %in% c("Don’t know")~9,
+            x %in% c("Refusal")~9,
+            x %in% c("Valid skip")~9,
+            x %in% c("Not stated")~9)
+            
+}
+
+scale8 <- function(x){
+  case_when(x %in% c("Strongly disagree")~0,
+            x %in% c("Disagree")~1,
+            x %in% c("Neither agree nor disagree")~2,
+            x %in% c("Agree")~3,
+            x %in% c("Strongly agree")~4,
+            x %in% c("Valid skip")~9,
+            x %in% c("Don’t know")~9,
+            x %in% c("Not applicable")~9,
+            x %in% c("Refusal")~9,
+            x %in% c("Not stated")~9)
+}
+
+scale9<- function(x){
+  case_when(x %in% c("Yes")~1,
+            x %in% c("No")~0)
+}
+
+scale10 <- function(x){
+  case_when(x %in% c("No income or less than $20,000")~0,
+            x %in% c("$20,000 to $39,999")~1,
+            x %in% c("$40,000 to $59,999")~2,
+            x %in% c("$60,000 to $79,999")~3,
+            x %in% c("$80,000 or more")~4,
+            x %in% c("Not stated")~9)
+}
+
+scale11<- function(x){
+  case_when(x %in% c("Very dissatisfied")~0,
+            x %in% c("Dissatisfied")~1,
+            x %in% c("Neither satisfied nor dissatisfied")~2,
+            x %in% c("Satisfied")~3,
+            x %in% c("Very satisfied")~4,
+            x %in% c("Valid skip")~9,
+            x %in% c("Refusal")~9,
+            x %in% c("Not stated")~9,
+            x %in% c("Don’t know")~9)
+}
+
+scale12<- function(x){
+  case_when(x %in% c("Female")~0,
+            x %in% c("Male")~1)
+}
+
+scale13<- function(x){
+  case_when(x %in% c("BRITISH COLUMBIA")~0,
+            x %in% c("ALBERTA")~1,
+            x %in% c("SASKATCHEWAN")~2,
+            x %in% c("MANITOBA")~3,
+            x %in% c("ONTARIO")~4,
+            x %in% c("QUEBEC")~5,
+            x %in% c("NEW BRUNSWICK")~6,
+            x %in% c("NOVA SCOTIA")~7,
+            x %in% c("PRINCE EDWARD ISLAND")~8,
+            x %in% c("NEWFOUNDLAND AND LABRADOR")~9,
+            x %in% c("YUKON")~10,
+            x %in% c("NUNAVUT")~11,
+            x %in% c("NORTHWEST TERRITORIES")~12)
+}
+
+scale14<- function(x){
+  case_when(x %in% c("Age between 12 and 14")~0,
+            x %in% c("Age between 15 and 17")~1,
+            x %in% c("Age between 18 and 19")~2,
+            x %in% c("Age between 20 and 24")~3,
+            x %in% c("Age between 25 and 29")~4,
+            x %in% c("Age between 30 and 34")~5,
+            x %in% c("Age between 35 and 39")~6,
+            x %in% c("Age between 40 and 44")~7,
+            x %in% c("Age between 45 and 49")~8,
+            x %in% c("Age between 50 and 54")~9,
+            x %in% c("Age between 55 and 59")~10,
+            x %in% c("Age between 60 and 64")~11,
+            x %in% c("Age between 65 and 69")~12,
+            x %in% c("Age between 70 and 74")~13,
+            x %in% c("Age between 75 and 79")~14,
+            x %in% c("Age 80 and older")~15)
+}
+
+scale15<- function(x){
+  case_when(x %in% c("[0-30)")~0,
+            x %in% c("[30-40)")~1,
+            x %in% c("[40-99)")~2)
+}
+
+scale16<- function(x){
+  case_when(x %in% c("White")~0,
+            x %in% c("Non-white (Aboriginal or Other Visible Minority)")~1,
+            x %in% c("Valid skip")~9,
+            x %in% c("Not stated")~9)
+}
+
+
+
+depdata$GENDVHDI <- sapply(depdata$GENDVHDI,scale1)
+depdata$GENDVMHI <- sapply(depdata$GENDVMHI,scale1)
+
+depdata$DHHGMS <- sapply(depdata$DHHGMS,scale2)
+
+depdata$GEN_020 <- sapply(depdata$GEN_020,scale7)
+depdata$GEN_025 <- sapply(depdata$GEN_025,scale7)
+
+depdata$DEPDVSEV <- sapply(depdata$DEPDVSEV,scale3)
+
+depdata$INCDGPER <- sapply(depdata$INCDGPER,scale5)
+depdata$INCDGHH <- sapply(depdata$INCDGHH,scale10)
+
+depdata$WST_070 <- sapply(depdata$WST_070,scale6)
+
+depdata$LBFDVPFT <- sapply(depdata$LBFDVPFT,scale4)
+
+depdata$WST_005 <- sapply(depdata$WST_005,scale8)
+depdata$WST_010 <- sapply(depdata$WST_010,scale8)
+depdata$WST_015 <- sapply(depdata$WST_015,scale8)
+depdata$WST_020 <- sapply(depdata$WST_020,scale8)
+depdata$WST_025 <- sapply(depdata$WST_025,scale8)
+depdata$WST_030 <- sapply(depdata$WST_030,scale8)
+depdata$WST_035 <- sapply(depdata$WST_035,scale8)
+depdata$WST_040 <- sapply(depdata$WST_040,scale8)
+depdata$WST_045 <- sapply(depdata$WST_045,scale8)
+depdata$WST_050 <- sapply(depdata$WST_050,scale8)
+depdata$WST_055 <- sapply(depdata$WST_055,scale8)
+depdata$WST_060 <- sapply(depdata$WST_060,scale8)
+
+depdata$DODEP <- sapply(depdata$DODEP,scale9)
+
+depdata$SWL_005<- sapply(depdata$SWL_005,scale11)
+depdata$SWL_015<- sapply(depdata$SWL_015,scale11)
+depdata$SWL_020<- sapply(depdata$SWL_020,scale11)
+
+depdata$DOWST<- sapply(depdata$DOWST, scale9)
+
+depdata$DHH_SEX<- sapply(depdata$DHH_SEX, scale12)
+
+depdata$GEO_PRV<- sapply(depdata$GEO_PRV, scale13)
+
+depdata$DHHGAGE<- sapply(depdata$DHHGAGE, scale14)
+
+depdata[depdata$LBFDGHPW == "Not stated",]$LBFDGHPW = 0
+depdata[depdata$LBFDGHPW == "Valid skip",]$LBFDGHPW = 0
+
+vgroup$tag <- sapply(vgroup$tag, scale15)
+
+deprace$SDCDGCGT <- sapply(deprace$SDCDGCGT,scale16)
+
+tgroup$SDCDGCGT <- sapply(tgroup$SDCDGCGT,scale16)
+tgroup$DODEP <- sapply(tgroup$DODEP,scale9)
+tgroup$DOWST<- sapply(tgroup$DOWST, scale9)
+tgroup$DEPDVSEV <- sapply(tgroup$DEPDVSEV,scale3)
+tgroup$DHH_SEX<- sapply(tgroup$DHH_SEX, scale12)
+tgroup$DHHGMS <- sapply(tgroup$DHHGMS,scale2)
+ 
+```
+
+```{r}
+#Linear models
+factor.work.type <- factor(depdata$LBFDVPFT,levels =c(0,1))
+factor.work.stress <- factor(depdata$GEN_025, levels = c(0,1,2,3,4))
+factor.work.sat <- factor(depdata$WST_070, levels = c(0,1,2,3,4))
+factor.work.learn <- factor(depdata$WST_005, levels = c(0,1,2,3,4))
+factor.work.highskill <- factor(depdata$WST_010, levels = c(0,1,2,3,4))
+factor.work.decide <- factor(depdata$WST_015, levels = c(0,1,2,3,4))
+factor.work.reptask <- factor(depdata$WST_020, levels = c(0,1,2,3,4))
+factor.work.hectic <- factor(depdata$WST_025, levels = c(0,1,2,3,4))
+factor.work.conf <- factor(depdata$WST_030, levels = c(0,1,2,3,4))
+factor.work.security <- factor(depdata$WST_035, levels = c(0,1,2,3,4))
+factor.work.physical <- factor(depdata$WST_040, levels = c(0,1,2,3,4))
+factor.work.input <- factor(depdata$WST_045, levels = c(0,1,2,3,4))
+factor.work.hostility <- factor(depdata$WST_050, levels = c(0,1,2,3,4))
+factor.work.supervisor <- factor(depdata$WST_055, levels = c(0,1,2,3,4))
+factor.work.coworkers <- factor(depdata$WST_060, levels = c(0,1,2,3,4))
+
+factor.inc.personal <- factor(depdata$INCDGPER, levels =c(0,1,2,3,4,5))
+factor.inc.household <- factor(depdata$INCDGHH, levels =c(0,1,2,3,4,5))
+
+factor.sat.job <- factor(depdata$SWL_005, levels =c(0,1,2,3,4))
+factor.sat.financial <- factor(depdata$SWL_015, levels =c(0,1,2,3,4))
+factor.sat.self <- factor(depdata$SWL_020, levels =c(0,1,2,3,4))
+
+factor.life.stress <- factor(depdata$GEN_020, levels =c(0,1,2,3,4))
+
+
+
+summary(glm(depdata$DODEP ~ factor.work.stress, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.work.sat, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.work.learn, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.work.highskill, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.work.decide, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.work.reptask, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.work.hectic, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.work.conf, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.work.security, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.work.physical, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.work.input, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.work.hostility, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.work.supervisor, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.inc.personal, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.inc.household, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.sat.job, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.sat.financial, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.sat.self, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.work.type, family = "binomial"))
+summary(glm(depdata$DODEP ~ factor.life.stress, family = "binomial"))
+
+summary(glm(depdata$DODEP ~ depdata$DOWST, family = "binomial"))
+
+mod.dep.wkrstr <- glm(depdata$DODEP ~ depdata$DOWST, family = "binomial")
+
+```
+
+```{r}
+
+#library(stargazer)
+library(table1)
+
+demographics <- select(smalldata, ADM_RNO, GEO_PRV, DHH_SEX, DHHGMS,DHHGAGE,EHG2DVR3,GEN_020,GEN_025,GENDVMHI,DODEP,DEPDVSEV,DOWST)
+
+work.stress <- select(smalldata,ADM_RNO,DODEP,DOWST,WST_005,WST_010,WST_015,WST_020,WST_025,WST_030,WST_035,
+                      WST_040,WST_045,WST_050,WST_055,WST_060,WST_070)
+table1(~DHH_SEX + DHHGMS | DODEP, data = demographics,overall="Total",output="html")
+
+label(demographics$DHH_SEX)<- "Sex"
+label(demographics$DOWST)<- "Work Stress"
+label(demographics$DEPDVSEV)<- "Depression Severity"
+label(demographics$DODEP)<- "Depression Status"
+label(demographics$DHHGAGE)<- "Age"
+label(demographics$DHHGMS)<- "Martial Status"
+
+table1(~ WST_005 +WST_010+WST_015+WST_020+WST_025+WST_030+WST_035+WST_040+WST_045+WST_050+WST_055+WST_060+WST_070 | DODEP, data = work.stress,output ="html")
+
+work.stress$DODEP <-labels("Yes","n")
+```
+
+```{r}
+
+depdata$DHH_SEX <- factor(depdata$DHH_SEX, levels =c(1,0),
+                     labels = c("Male",
+                                "Female"))
+
+depdata$DODEP <- factor(depdata$DODEP, levels =c(1,0),
+                     labels = c("Yes",
+                                "No"))
+tgroup$DODEP <- factor(tgroup$DODEP, levels =c(1,0),
+                     labels = c("Yes",
+                                "No"))
+
+depdata$DHHGMS <- factor(depdata$DHHGMS, levels = c(0,1,2,3),
+                         labels =c("Married",
+                                   "Common-law",
+                                   "Widowed/Divorced/Separated",
+                                   "Single"))
+
+depdata$GEO_PRV <- factor(depdata$GEO_PRV, levels = c(0,1,2,3,4,5,6,7,8,9,10,11,12),
+                         labels =c("BRITISH COLUMBIA",
+                                   "ALBERTA",
+                                   "SASKATCHEWAN",
+                                   "MANITOBA",
+                                   "ONTARIO",
+                                   "QUEBEC",
+                                   "NEW BRUNSWICK",
+                                   "NOVA SCOTIA",
+                                   "PRINCE EDWARD ISLAND",
+                                   "NEWFOUNDLAND AND LABRADOR",
+                                   "YUKON",
+                                   "NUNAVUT",
+                                   "NORTHWEST TERRITORIES"))
+
+depdata$DEPDVSEV <- factor(depdata$DEPDVSEV, levels = c(0,1,2,3,4,5,9),
+                         labels =c("No Depression",
+                                   "Minimal depression",
+                                   "Mild depression",
+                                   "Moderate depression",
+                                   "Moderately severe depression",
+                                   "Severe depression",
+                                   "Not Included"))
+
+depdata$DOWST <- factor(depdata$DOWST, levels =c(1,0),
+                     labels = c("Yes",
+                                "No"))
+tgroup$DOWST <- factor(tgroup$DOWST, levels =c(1,0),
+                     labels = c("Yes",
+                                "No"))
+
+
+depdata$DHHGAGE <- factor(depdata$DHHGAGE, levels =c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15),
+                     labels = c("Age between 12 and 14",
+                                "Age between 15 and 17",
+                                "Age between 18 and 19",
+                                "Age between 20 and 24",
+                                "Age between 25 and 29",
+                                "Age between 30 and 34",
+                                "Age between 35 and 39",
+                                "Age between 40 and 44",
+                                "Age between 45 and 49",
+                                "Age between 50 and 54",
+                                "Age between 55 and 59",
+                                "Age between 60 and 64",
+                                "Age between 65 and 69",
+                                "Age between 70 and 74",
+                                "Age between 75 and 79",
+                                "Age 80 and older"))
+
+depdata$LBFDVPFT <- factor(depdata$LBFDVPFT, levels =c(0,1,9),
+                     labels = c("Full-Time",
+                                "Part-Time",
+                                "Not Included"))
+
+depdata$INCDGHH <- factor(depdata$INCDGHH, levels =c(0,1,2,3,4,9),
+                     labels = c("No income or less than $20,000",
+                                "$20,000 to $39,999",
+                                "$40,000 to $59,999",
+                                "$60,000 to $79,999",
+                                "$80,000 or more",
+                                "Not stated"))
+
+depdata$INCDGPER <- factor(depdata$INCDGPER, levels =c(0,1,2,3,4,5,9),
+                     labels = c("No income or less than $20,000",
+                                "Less than $20,000",
+                                "$20,000 to $39,999",
+                                "$40,000 to $59,999",
+                                "$60,000 to $79,999",
+                                "$80,000 or more",
+                                "Not stated"))
+
+vgroup$tag <- factor(vgroup$tag, levels =c(0,1,2),
+                     labels = c("[0-30)",
+                                "[30-40)",
+                                "[40-99)"))
+
+tgroup$SDCDGCGT <- factor(tgroup$SDCDGCGT, levels =c(0,1),
+                     labels = c("White",
+                                "Non-White"))
+
+
+label(depdata$DHH_SEX)<- "Sex"
+label(depdata$DOWST)<- "Work Stress"
+label(depdata$DEPDVSEV)<- "Depression Severity"
+label(depdata$DODEP)<- "Depression Status"
+label(depdata$DHHGAGE)<- "Age"
+label(depdata$DHHGMS)<- "Martial Status"
+label(depdata$GEO_PRV)<- "Province/Territory"
+label(depdata$LBFDVPFT)<- "Work Status"
+label(depdata$INCDGHH) <- "Total Household Income"
+label(depdata$INCDGPER) <- "Personal Income"
+label(vgroup$tag) <- "Hours worked"
+
+
+
+table1(~DHH_SEX + DHHGMS + GEO_PRV | DODEP, data = depdata,overall="Total",output="html")
+table1(~DOWST + DEPDVSEV | DODEP, data = depdata,overall="Total",output="html")
+table1(~DHHGAGE | DODEP, data = depdata, overall="Total", output="html")
+table1(~LBFDVPFT+ INCDGHH + INCDGPER | DODEP, data = depdata, overall = "Total", output="html")
+table1(~tag |DODEP, data=vgroup, overall = "Total", output="html")
+table1(~SDCDGCGT | DODEP, data=tgroup, overall = "Total", output="html")
+
+library(epiDisplay)
+tab1(depdata$DHHGAGE, cum.percent = TRUE,
+     col ="#0073C2FF", bar.values = "percent",
+     main="Age Distribution of Respondants")
+
+library(sjPlot)
+library(sjmisc)
+library(sjlabelled)
+
+mod.dep.wkrstr <- glm(DODEP ~ DOWST, data = depdata, family = "binomial")
+tab_model(mod.dep.wkrstr)
+WorkStatus <- factor.work.type
+
+mod.dep.wrktype <- glm(DODEP ~ WorkStatus, data = depdata,family ="binomial")
+tab_model(mod.dep.wrktype)
+
+test.hours <- filter(depdata,LBFDGHPW >0)
+#dim(test.hours)
+
+
+library(hrbrthemes)
+a <- as.numeric(test.hours$LBFDGHPW)
+
+h<- hist(a,
+      breaks = 10, 
+       col = "cadetblue3",
+      main = "Frequency of Usual Total Hours Worked per Week",
+      xlab = "Total Hours Worked per Week")
+xfit<-seq(min(a),max(a),length=40)
+yfit<-dnorm(xfit,mean=mean(a),sd=sd(a))
+yfit <- yfit*diff(h$mids[1:2])*length(a)
+lines(xfit, yfit, col="blue", lwd=2)
+
+breaks <- c(0,30,40,99)
+tags <- c("[0-30)","[30-40)","[40-99)")
+# group_tags <- cut(a,
+#                   breaks=breaks,
+#                   include.lowest = TRUE,
+#                   right = FALSE,
+#                   labels = tags)
+
+v <- dplyr::select(test.hours,ADM_RNO,DODEP,DOWST,LBFDGHPW,DEPDVSEV,DHH_SEX,DHHGMS,GEN_025,SWL_005,SWL_015)
+vgroup <- as_tibble(v)%>%
+  mutate(tag = case_when(
+    LBFDGHPW >= 0 & LBFDGHPW < 30 ~ tags[1],
+    LBFDGHPW >= 30 & LBFDGHPW < 40 ~ tags[2],
+    LBFDGHPW >= 40 & LBFDGHPW <= 99 ~ tags[3],
+  ))
+vgroup$tag <- factor(vgroup$tag,
+                     levels = tags,
+                     ordered = FALSE)
+summary(vgroup$tag)
+
+deprace <- dplyr::select(x, ADM_RNO, SDCDGCGT)
+tgroup <- left_join(vgroup, deprace, by = "ADM_RNO")
+
+
+```
+
+```{r}
+library(kableExtra)
+library(pixiedust)
+
+tgroup%>%
+  rename(Depression_Status = DODEP)
+
+fit <- glm(tgroup$DODEP ~ tgroup$DOWST, family = "binomial")
+fit3 <- glm(tgroup$DODEP ~ tgroup$SDCDGCGT, family ="binomial")
+fit4<- glm(tgroup$DOWST ~ tgroup$SDCDGCGT, family ="binomial")
+fit5<- glm(tgroup$LBFDGHPW ~ tgroup$DODEP, family = 'binomial')
+fit6 <-glm(tgroup$DOWST ~ tgroup$DHH_SEX, family = 'binomial')
+#depression and workstress
+dust(fit) %>%
+  sprinkle(col = 2:4, round = 3) %>%
+  sprinkle(col = 5, fn= quote(pvalString(value))) %>%
+  sprinkle_colnames(term = "Term",
+                    estimate = "Estimate",
+                    std.error = "SE",
+                    statistic = "Z-Statistic",
+                    p.value= "P-value") %>%
+  kable()%>%
+  kable_paper("striped",full_width = TRUE)
+
+#Depression and background
+dust(fit3) %>%
+  sprinkle(col = 2:4, round = 3) %>%
+  sprinkle(col = 5, fn= quote(pvalString(value))) %>%
+  sprinkle_colnames(term = "Term",
+                    estimate = "Estimate",
+                    std.error = "SE",
+                    statistic = "Z-Statistic",
+                    p.value= "P-value") %>%
+  kable()%>%
+  kable_paper("striped",full_width = TRUE)
+
+#Workstress and background
+dust(fit4) %>%
+  sprinkle(col = 2:4, round = 3) %>%
+  sprinkle(col = 5, fn= quote(pvalString(value))) %>%
+  sprinkle_colnames(term = "Term",
+                    estimate = "Estimate",
+                    std.error = "SE",
+                    statistic = "Z-Statistic",
+                    p.value= "P-value") %>%
+  kable()%>%
+  kable_paper("striped",full_width = TRUE)
+
+#Workhours and Depression
+dust(fit5) %>%
+  sprinkle(col = 2:4, round = 3) %>%
+  sprinkle(col = 5, fn= quote(pvalString(value))) %>%
+  sprinkle_colnames(term = "Term",
+                    estimate = "Estimate",
+                    std.error = "SE",
+                    statistic = "Z-Statistic",
+                    p.value= "P-value") %>%
+  kable()%>%
+  kable_paper("striped",full_width = TRUE)
+
+#Workstress and Sex 
+dust(fit6) %>%
+  sprinkle(col = 2:4, round = 3) %>%
+  sprinkle(col = 5, fn= quote(pvalString(value))) %>%
+  sprinkle_colnames(term = "Term",
+                    estimate = "Estimate",
+                    std.error = "SE",
+                    statistic = "Z-Statistic",
+                    p.value= "P-value") %>%
+  kable()%>%
+  kable_paper("striped",full_width = TRUE)
+
+```
+
