@@ -636,8 +636,13 @@ tgroup%>%
 fit <- glm(tgroup$DODEP ~ tgroup$DOWST, family = "binomial")
 fit3 <- glm(tgroup$DODEP ~ tgroup$SDCDGCGT, family ="binomial")
 fit4<- glm(tgroup$DOWST ~ tgroup$SDCDGCGT, family ="binomial")
-fit5<- glm(tgroup$LBFDGHPW ~ tgroup$DODEP, family = 'binomial')
+fit5<- glm(tgroup$DODEP ~ tgroup$LBFDGHPW, family = 'binomial')
 fit6 <-glm(tgroup$DOWST ~ tgroup$DHH_SEX, family = 'binomial')
+fit7<- glm(tgroup$DOWST ~ tgroup$LBFDGHPW, family = 'binomial')
+
+tgroup$LBFDGHPW <- as.numeric(LBFDGHPW)
+
+
 #depression and workstress
 dust(fit) %>%
   sprinkle(col = 2:4, round = 3) %>%
@@ -698,5 +703,24 @@ dust(fit6) %>%
   kable()%>%
   kable_paper("striped",full_width = TRUE)
 
+#Workstress and Hours 
+dust(fit7) %>%
+  sprinkle(col = 2:4, round = 3) %>%
+  sprinkle(col = 5, fn= quote(pvalString(value))) %>%
+  sprinkle_colnames(term = "Term",
+                    estimate = "Estimate",
+                    std.error = "SE",
+                    statistic = "Z-Statistic",
+                    p.value= "P-value") %>%
+  kable()%>%
+  kable_paper("striped",full_width = TRUE)
+
 ```
+
+```{r}
+range(tgroup$LBFDGHPW)
+#2 - 98
+ 
+```
+
 
