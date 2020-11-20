@@ -28,6 +28,8 @@ depdata <- select(x,ADM_RNO,GEO_PRV,DHH_SEX,DHHGMS,DHHGAGE,DHHDGLVG,MAC_005,MAC_
 
 smalldata <- select(x,ADM_RNO,GEO_PRV,DHH_SEX,DHHGMS,DHHGAGE,DHHDGLVG,MAC_005,MAC_010,EHG2DVR3,GEN_005,GEN_015,GEN_020,GEN_025,GEN_030,GENDVMHI,GENDVSWL,CMH_005, CMH_015B,CMH_015A,CMH_015C,CMH_015D,CMH_015E,CMH_015F,SWL_005,SWL_015,SWL_020,SWL_040,DODEP,DEPDVSEV,SUI_005,SUI_010,DOWST,WST_005,WST_010,WST_015,WST_020,WST_025,WST_030,WST_035,WST_040,WST_045,WST_050,WST_055,WST_060,WST_070,GENDVHDI,CCC_200,INCDGPER,INCDGHH,LBFDGHPW,CCC_195,CCC_200,LBFDVPFT)
 
+wsdata<- select(x,ADM_RNO,DODEP,DOWST,WSTDVSKI,WSTDVPSY, WSTDVJIN, WSTDVPHY,WSTDVAUT,WSTDVJST,WSTDVSOC,LBFDGHPW)
+
 #depdata <- filter(smalldata, DODEP == "Yes")
 
 #Frequency distributions
@@ -304,7 +306,10 @@ scale16<- function(x){
             x %in% c("Not stated")~9)
 }
 
-
+scale17<- function(x){
+  case_when( x %in% c("Valid skip")~999,
+            x %in% c("Not stated")~999)
+}
 
 depdata$GENDVHDI <- sapply(depdata$GENDVHDI,scale1)
 depdata$GENDVMHI <- sapply(depdata$GENDVMHI,scale1)
@@ -352,6 +357,25 @@ depdata$DHHGAGE<- sapply(depdata$DHHGAGE, scale14)
 
 depdata[depdata$LBFDGHPW == "Not stated",]$LBFDGHPW = 0
 depdata[depdata$LBFDGHPW == "Valid skip",]$LBFDGHPW = 0
+
+wsdata$DODEP <- sapply(wsdata$DODEP,scale9)
+wsdata$DOWST<- sapply(wsdata$DOWST, scale9)
+
+wsdata.hours<- wsdata %>%
+  filter(!LBFDGHPW %in% c("Not stated","Valid skip"))
+wsdata.hours$LBFDGHPW <- as.numeric(wsdata.hours$LBFDGHPW)
+
+wsdata.strain<- wsdata %>%
+  filter(!WSTDVJST %in% c("Not stated","Valid skip"))
+wsdata.strain$WSTDVJST <- as.numeric(wsdata.strain$WSTDVJST)
+
+wsdata.secure<- wsdata %>%
+  filter(!WSTDVJIN %in% c("Not stated","Valid skip"))
+wsdata.secure$WSTDVJIN <- as.numeric(wsdata.hours$WSTDVJIN)
+
+
+depdata.wage <- depdata%>%
+  filter(GEN_025 ==3)
 
 vgroup$tag <- sapply(vgroup$tag, scale15)
 
@@ -636,9 +660,9 @@ tgroup%>%
 fit <- glm(tgroup$DODEP ~ tgroup$DOWST, family = "binomial")
 fit3 <- glm(tgroup$DODEP ~ tgroup$SDCDGCGT, family ="binomial")
 fit4<- glm(tgroup$DOWST ~ tgroup$SDCDGCGT, family ="binomial")
-fit5<- glm(tgroup$DODEP ~ tgroup$LBFDGHPW, family = 'binomial')
+fit5<- glm(wsdata.hours$DODEP ~ wsdata.hours$LBFDGHPW, family = 'binomial')
 fit6 <-glm(tgroup$DOWST ~ tgroup$DHH_SEX, family = 'binomial')
-fit7<- glm(tgroup$DOWST ~ tgroup$LBFDGHPW, family = 'binomial')
+fit7<- glm(wsdata.hours$DOWST ~ wsdata.hours$LBFDGHPW, family = 'binomial')
 
 tgroup$LBFDGHPW <- as.numeric(LBFDGHPW)
 
